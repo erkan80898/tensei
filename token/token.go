@@ -57,7 +57,7 @@ const (
 	DO       = "DO"
 	CONTINUE = "CONTINUE"
 	BREAK    = "BREAK"
-	SWITCH   = "SWTICH"
+	SWITCH   = "SWITCH"
 )
 
 type Token struct {
