@@ -16,11 +16,16 @@ func Start(in io.Reader, out io.Writer) {
 	for {
 		fmt.Printf(PROMPT)
 		scanned := scanner.Scan()
+
 		if !scanned {
 			return
 		}
 
 		line := scanner.Text()
+		if line == "exit" {
+			break
+		}
+
 		l := lexer.NewLexer(line)
 
 		for tok := l.NextToken(); tok.Type != token.EOF; tok = l.NextToken() {

@@ -50,6 +50,7 @@ const (
 	TRUE     = "TRUE"
 	FALSE    = "FALSE"
 	IF       = "IF"
+	ELIF     = "ELIF"
 	ELSE     = "ELSE"
 	RETURN   = "RETURN"
 	WHILE    = "WHILE"
@@ -58,6 +59,9 @@ const (
 	CONTINUE = "CONTINUE"
 	BREAK    = "BREAK"
 	SWITCH   = "SWITCH"
+	TYPE     = "TYPE"
+	STRUCT   = "STRUCT"
+	TYPEOF   = "TYPEOF"
 )
 
 type Token struct {
@@ -71,6 +75,7 @@ var keywords = map[string]TokenType{
 	"true":     TRUE,
 	"false":    FALSE,
 	"if":       IF,
+	"elif":     ELIF,
 	"else":     ELSE,
 	"return":   RETURN,
 	"while":    WHILE,
@@ -79,6 +84,9 @@ var keywords = map[string]TokenType{
 	"continue": CONTINUE,
 	"break":    BREAK,
 	"switch":   SWITCH,
+	"type":     TYPE,
+	"struct":   STRUCT,
+	"typeof":   TYPEOF,
 }
 
 // return either ident or keyword
