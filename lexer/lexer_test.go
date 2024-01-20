@@ -23,6 +23,8 @@ let loop = fn(z) {
   }
 };
 let result = add(num, secnum);
+
+let name = "Erk" + string(result);
 `
 
 	tests := []struct {
@@ -94,6 +96,17 @@ let result = add(num, secnum);
 		{token.IDENT, "num"},
 		{token.COMMA, ","},
 		{token.IDENT, "secnum"},
+		{token.RPAREN, ")"},
+		{token.SEMICOLON, ";"},
+
+		{token.LET, "let"},
+		{token.IDENT, "name"},
+		{token.ASSIGN, "="},
+		{token.STRING, "Erk"},
+		{token.PLUS, "+"},
+		{token.IDENT, "string"},
+		{token.LPAREN, "("},
+		{token.IDENT, "result"},
 		{token.RPAREN, ")"},
 		{token.SEMICOLON, ";"},
 		{token.EOF, ""},

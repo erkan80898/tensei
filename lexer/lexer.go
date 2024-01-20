@@ -111,6 +111,26 @@ func (l *Lexer) NextToken() token.Token {
 		default:
 			tok = newtoken(token.LT, "<")
 		}
+	case '|':
+		switch l.peek() {
+		case '|':
+			tok = newtoken(token.OR, "||")
+			l.step()
+		default:
+			tok = newtoken(token.ILLEGAL, "|"+string(l.peek()))
+		}
+	case '&':
+		switch l.peek() {
+		case '&':
+			tok = newtoken(token.AND, "&&")
+			l.step()
+		default:
+			tok = newtoken(token.ILLEGAL, "&"+string(l.peek()))
+		}
+	case '"':
+		l.step()
+		ttype, lit := l.readstring()
+		return newtoken(ttype, lit)
 	case 0:
 		tok = newtoken(token.EOF, "")
 	default:
@@ -171,6 +191,20 @@ func (l *Lexer) readident() (tok token.TokenType, literal string) {
 	literal = l.source[start:l.cursor]
 	tok = token.LookupIdent(literal)
 	return tok, literal
+}
+
+func (l *Lexer) readstring() (tok token.TokenType, literal string) {
+	start := l.cursor
+	for l.ch != '"' {
+		if l.ch == 0 {
+			return token.ILLEGAL, l.source[start:l.cursor]
+		}
+		l.step()
+	}
+	literal = l.source[start:l.cursor]
+	//step past last ending "
+	l.step()
+	return token.STRING, literal
 }
 
 func newtoken(tokenType token.TokenType, literal string) token.Token {

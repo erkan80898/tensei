@@ -7,9 +7,10 @@ const (
 	EOF     = "EOF"
 
 	// Identifiers + literals
-	IDENT = "IDENT"
-	INT   = "INT"
-	FLOAT = "FLOAT"
+	IDENT  = "IDENT"
+	STRING = "STRING"
+	INT    = "INT"
+	FLOAT  = "FLOAT"
 
 	// Operators
 	ASSIGN   = "="
@@ -34,6 +35,9 @@ const (
 	POWER  = "**"
 	INC    = "++"
 	DEC    = "--"
+
+	OR  = "||"
+	AND = "&&"
 
 	// Delimiters
 	COMMA     = ","
