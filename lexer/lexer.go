@@ -117,7 +117,7 @@ func (l *Lexer) NextToken() token.Token {
 			tok = newtoken(token.OR, "||")
 			l.step()
 		default:
-			tok = newtoken(token.ILLEGAL, "|"+string(l.peek()))
+			tok = newtoken(token.ILLEGAL, wrapIllegalLiteral("Illegal Token- |"+string(l.peek())))
 		}
 	case '&':
 		switch l.peek() {
@@ -125,7 +125,7 @@ func (l *Lexer) NextToken() token.Token {
 			tok = newtoken(token.AND, "&&")
 			l.step()
 		default:
-			tok = newtoken(token.ILLEGAL, "&"+string(l.peek()))
+			tok = newtoken(token.ILLEGAL, wrapIllegalLiteral("Illegal Token- &"+string(l.peek())))
 		}
 	case '"':
 		l.step()
@@ -141,7 +141,7 @@ func (l *Lexer) NextToken() token.Token {
 			ttype, lit := l.readident()
 			return newtoken(ttype, lit)
 		} else {
-			tok = newtoken(token.ILLEGAL, string(l.ch))
+			tok = newtoken(token.ILLEGAL, wrapIllegalLiteral("Illegal Token- "+string(l.ch)))
 		}
 	}
 
@@ -173,12 +173,21 @@ func (l *Lexer) prepare() {
 func (l *Lexer) readnumber() (tok token.TokenType, literal string) {
 	start := l.cursor
 	tok = token.INT
+	malFlag := false
 	for isDigit(l.ch) || l.ch == '.' {
 		if l.ch == '.' {
+			if tok == token.FLOAT {
+				malFlag = true
+			}
 			tok = token.FLOAT
 		}
 		l.step()
 	}
+
+	if malFlag == true {
+		return token.ILLEGAL, wrapIllegalLiteral("Malformed float: " + l.source[start:l.cursor])
+	}
+
 	literal = l.source[start:l.cursor]
 	return tok, literal
 }
@@ -197,7 +206,7 @@ func (l *Lexer) readstring() (tok token.TokenType, literal string) {
 	start := l.cursor
 	for l.ch != '"' {
 		if l.ch == 0 {
-			return token.ILLEGAL, l.source[start:l.cursor]
+			return token.ILLEGAL, wrapIllegalLiteral("No closing \": " + l.source[start:l.cursor])
 		}
 		l.step()
 	}
@@ -217,4 +226,8 @@ func isLetter(ch byte) bool {
 
 func isDigit(ch byte) bool {
 	return '0' <= ch && ch <= '9'
+}
+
+func wrapIllegalLiteral(msg string) string {
+	return "\"" + msg + "\""
 }
