@@ -11,7 +11,7 @@ type Lexer struct {
 	ch        byte
 }
 
-func NewLexer(src string) *Lexer {
+func New(src string) *Lexer {
 	l := &Lexer{source: src, cursor: -1, lookahead: -1}
 	l.step()
 	return l

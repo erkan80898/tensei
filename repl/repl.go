@@ -3,6 +3,7 @@ package repl
 import (
 	"bufio"
 	"fmt"
+	"github.com/inancgumus/screen"
 	"io"
 	"os"
 	"tensei/lexer"
@@ -14,6 +15,7 @@ const PROMPT = ">> "
 const HELP = `
   Commands:
   exit/quit: quit the program
+  clear: clears screen
   --file <filePath>: read the file and run source code from file 
 `
 
@@ -37,6 +39,10 @@ program:
 			fallthrough
 		case "quit":
 			break program
+		case "clear":
+			screen.Clear()
+			screen.MoveTopLeft()
+			continue program
 		case "help":
 			println(HELP)
 			continue program
@@ -46,9 +52,9 @@ program:
 				if err != nil {
 					fmt.Println(err)
 				}
-				l = lexer.NewLexer(string(bytes))
+				l = lexer.New(string(bytes))
 			} else {
-				l = lexer.NewLexer(line)
+				l = lexer.New(line)
 			}
 		}
 
