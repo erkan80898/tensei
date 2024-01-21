@@ -189,6 +189,13 @@ func (l *Lexer) readnumber() (tok token.TokenType, literal string) {
 	}
 
 	literal = l.source[start:l.cursor]
+
+	if tok == token.INT && l.ch == 'f' {
+		tok = token.FLOAT
+		literal += ".0"
+		l.step()
+	}
+
 	return tok, literal
 }
 
