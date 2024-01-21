@@ -73,7 +73,6 @@ func (p *Parser) parseLet() *ast.LetStatement {
 
 	//Skipping expression till ;
 	//ie let x = 2 + 3;
-	//is let x = 2
 	//todo come back to handle them
 	for !p.curIs(token.SEMICOLON) {
 		p.nextToken()
