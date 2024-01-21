@@ -8,6 +8,7 @@ import (
 	"tensei/lexer"
 	"tensei/parser"
 	"tensei/token"
+	"tensei/util"
 
 	"github.com/inancgumus/screen"
 )
@@ -59,6 +60,15 @@ program:
 				l = lexer.New(string(bytes))
 			} else if len(line) > 6 && line[0:6] == "--set " {
 				mode = string(line[6])
+				text := mode
+				if mode == "l" {
+					text = "Lexer"
+				} else {
+					text = "Parser"
+				}
+
+				fmt.Printf("Mode changed to: %s", text+util.NEW_LINE)
+				continue program
 			} else {
 				l = lexer.New(line)
 			}
