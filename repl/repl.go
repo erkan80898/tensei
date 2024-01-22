@@ -39,6 +39,25 @@ program:
 
 		line := scanner.Text()
 
+		if len(line) > 7 && line[0:7] == "--file " {
+			bytes, err := os.ReadFile(line[7:])
+			if err != nil {
+				fmt.Println(err)
+			}
+			line = string(bytes)
+		} else if len(line) > 6 && line[0:6] == "--set " {
+			mode = string(line[6])
+			text := mode
+			if mode == "l" {
+				text = "Lexer"
+			} else {
+				text = "Parser"
+			}
+
+			fmt.Printf("Mode changed to: %s", text+util.NEW_LINE)
+			continue program
+		}
+
 		switch line {
 		case "exit":
 			fallthrough
@@ -52,26 +71,7 @@ program:
 			println(HELP)
 			continue program
 		default:
-			if len(line) > 7 && line[0:7] == "--file " {
-				bytes, err := os.ReadFile(line[7:])
-				if err != nil {
-					fmt.Println(err)
-				}
-				l = lexer.New(string(bytes))
-			} else if len(line) > 6 && line[0:6] == "--set " {
-				mode = string(line[6])
-				text := mode
-				if mode == "l" {
-					text = "Lexer"
-				} else {
-					text = "Parser"
-				}
-
-				fmt.Printf("Mode changed to: %s", text+util.NEW_LINE)
-				continue program
-			} else {
-				l = lexer.New(line)
-			}
+			l = lexer.New(line)
 		}
 
 		if mode == "l" {
