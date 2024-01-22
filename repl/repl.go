@@ -74,14 +74,12 @@ program:
 			l = lexer.New(line)
 		}
 
-		if mode == "l" {
+		switch mode {
+		case "l":
 			for tok := l.NextToken(); tok.Type != token.EOF; tok = l.NextToken() {
 				fmt.Printf("%+v\n", tok)
 			}
-			continue program
-		}
-
-		if mode == "p" {
+		case "p":
 			p = parser.New(l)
 			program := p.ParseProgram()
 			println(program.Statements[0].Display())
